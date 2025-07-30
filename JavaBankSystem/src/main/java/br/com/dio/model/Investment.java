@@ -2,7 +2,7 @@ package br.com.dio.model;
 
 public record Investment(
         long id,
-        long interestRate,
+        long tax,
         long daysToRescue,
         long initialFunds
 ) {}

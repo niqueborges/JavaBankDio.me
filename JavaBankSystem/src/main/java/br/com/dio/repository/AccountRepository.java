@@ -2,6 +2,7 @@ package br.com.dio.repository;
 
 import br.com.dio.exception.AccountNotFoundException;
 import br.com.dio.exception.NoFundsEnoughException;
+import br.com.dio.exception.PixInUseException;
 import br.com.dio.model.AccountWallet;
 import br.com.dio.model.Money;
 
@@ -18,29 +19,40 @@ public class AccountRepository {
         this.accounts = new ArrayList<>();
     }
 
-    public AccountWallet create(final List<String> pix, final long initialFunds) {
-        var newAccount = new AccountWallet(initialFunds, pix);
+    public AccountWallet create(final List<String> pixKeys, final long initialFunds) {
+        // Verifica se alguma chave PIX já está em uso
+        List<String> pixInUse = accounts.stream()
+                .flatMap(account -> account.getPix().stream())
+                .toList();
+
+        for (String pix : pixKeys) {
+            if (pixInUse.contains(pix)) {
+                throw new PixInUseException("A chave PIX " + pix + " já está em uso.");
+            }
+        }
+
+        AccountWallet newAccount = new AccountWallet(initialFunds, pixKeys);
         accounts.add(newAccount);
         return newAccount;
     }
 
-    public void deposit(final String pix, final long fundsAmount) {
-        var target = findByPix(pix);
-        target.addMoney(fundsAmount, "Depósito");
+    public void deposit(final String pix, final long amount) {
+        AccountWallet target = findByPix(pix);
+        target.addMoney(amount, "Depósito");
     }
 
     public void withdraw(final String pix, final long amount) {
-        var source = findByPix(pix);
+        AccountWallet source = findByPix(pix);
         checkFundsForTransaction(source, amount);
         source.reduceMoney(amount);
     }
 
     public void transferMoney(final String sourcePix, final String targetPix, final long amount) {
-        var source = findByPix(sourcePix);
+        AccountWallet source = findByPix(sourcePix);
         checkFundsForTransaction(source, amount);
 
-        var target = findByPix(targetPix);
-        var message = "Transferência de R$ " + amount + " de " + sourcePix + " para " + targetPix;
+        AccountWallet target = findByPix(targetPix);
+        String message = "Transferência de R$ " + amount + " de " + sourcePix + " para " + targetPix;
 
         List<Money> transferred = source.reduceMoney(amount);
         target.addMoney(transferred, source.getService(), message);
@@ -48,7 +60,7 @@ public class AccountRepository {
 
     public AccountWallet findByPix(final String pix) {
         return accounts.stream()
-                .filter(a -> a.getPix().contains(pix))
+                .filter(account -> account.getPix().contains(pix))
                 .findFirst()
                 .orElseThrow(() -> new AccountNotFoundException("A conta com a chave PIX " + pix + " não foi encontrada."));
     }

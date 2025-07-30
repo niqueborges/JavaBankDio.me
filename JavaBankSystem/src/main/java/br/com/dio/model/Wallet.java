@@ -42,7 +42,7 @@ public abstract class Wallet {
     public List<Money> reduceMoney(final long amount) {
         List<Money> toRemove = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            toRemove.add(this.money.removeFirst());
+            toRemove.add(this.money.removeFirst()); // Java 21+ OK. Se <21, use LinkedList.
         }
         return toRemove;
     }

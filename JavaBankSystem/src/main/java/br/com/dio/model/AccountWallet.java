@@ -1,7 +1,6 @@
 package br.com.dio.model;
 
 import java.util.List;
-
 import static br.com.dio.model.BankService.ACCOUNT;
 
 public class AccountWallet extends Wallet {
@@ -22,5 +21,9 @@ public class AccountWallet extends Wallet {
     public void addMoney(final long amount, final String description) {
         List<Money> generated = generateMoney(amount, description);
         this.money.addAll(generated);
+    }
+
+    public List<String> getPixKeys() {
+        return pixKeys;
     }
 }
