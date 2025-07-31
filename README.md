@@ -12,23 +12,39 @@ O sistema é orientado a objetos e simula operações bancárias comuns com foco
 - 💰 Depósito e saque por chave Pix
 - 📊 Auditoria de transações
 - 📈 Suporte a carteiras de investimento
+- 🏦 Realização e resgate de investimentos
+- 🔄 Atualização de rendimentos para carteiras de investimento
+- 📝 Listagem de contas bancárias e de investimento
+- 📜 Exibição de extrato e histórico de transações da conta
 - 🔒 Exceções personalizadas como `AccountNotFoundException`
 
 ## 🏗️ Estrutura do Projeto
 
-src/
-├── br.com.dio.model/
-│ ├── AccountWallet.java
-│ ├── InvestmentWallet.java
-│ ├── Money.java
-│ └── MoneyAudit.java
-├── br.com.dio.service/
-│ └── BankService.java
-├── br.com.dio.repository/
-│ └── AccountRepository.java
-├── br.com.dio.exception/
-│ └── AccountNotFoundException.java
+```
 
+src/
+├── br.com.dio.exception/
+│   ├── AccountNotFoundException.java
+│   ├── AccountWithInvestmentException.java
+│   ├── InvestmentNotFoundException.java
+│   ├── NoFundsEnoughException.java
+│   ├── PixInUseException.java
+│   └── WalletNotFoundException.java
+├── br.com.dio.model/
+│   ├── AccountWallet.java
+│   ├── BankService.java
+│   ├── Investment.java
+│   ├── InvestmentWallet.java
+│   ├── Money.java
+│   └── MoneyAudit.java
+├── br.com.dio.repository/
+│   ├── AccountRepository.java
+│   ├── CommonsRepository.java
+│   └── InvestmentRepository.java
+└── br.com.dio/
+└── Main.java
+
+````
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -40,21 +56,28 @@ src/
 
 ## 🚀 Como Executar
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-Abra no IntelliJ IDEA (ou qualquer IDE Java)
+1.  Clone o repositório:
+    ```bash
+    git clone [https://github.com/niqueborges/JavaBankDio.me.git]
+    ```
+2.  Abra no IntelliJ IDEA (ou qualquer IDE Java)
+3.  Navegue até o diretório `JavaBankSystem`.
+4.  Compile e execute a classe principal `br.com.dio.Main.java`. Você pode usar o Gradle para isso:
+    ```bash
+    ./gradlew run
+    ```
 
-Compile e execute a classe principal ou scripts de teste
+📌 **TODO**
 
-📌 TODO
- Criar interface para simulação via terminal
+-   Adicionar testes unitários com JUnit
+-   Implementar carteira empresarial
+-   Explorar opções para uma interface gráfica (web ou desktop)
 
- Adicionar testes unitários com JUnit
+🧑‍💻 **Autor**
 
- Implementar carteira empresarial
-
-🧑‍💻 Autor
 Desenvolvido por Monique Borges
+
 📧 contato: [seu-email@email.com]
+
 🔗 GitHub: github.com/niqueborges
+````
