@@ -317,7 +317,7 @@ public class Main {
                     } else {
                         System.out.println("📈 Carteiras de Investimento Ativas:");
                         for (InvestmentWallet iw : carteirasInvestimento) {
-                            System.out.println("ID do Investimento: " + iw.getInvestment().id() + " | Saldo da Carteira: R$ " + iw.getFunds() + " | PIX da Conta Associada: " + iw.getAccount().getPixKeys().get(0)); // Pega a primeira chave PIX para exibição
+                            System.out.println("ID do Investimento: " + ((Investment) iw.getInvestment()).id() + " | Saldo da Carteira: R$ " + iw.getFunds() + " | PIX da Conta Associada: " + iw.getAccount().getPixKeys().get(0)); // Pega a primeira chave PIX para exibição
                         }
                     }
                 }
@@ -326,7 +326,7 @@ public class Main {
                     // Atualizar rendimentos
                     if (investimentoRepo.listWallets().isEmpty()) {
                         System.out.println("⚠️ Nenhuma carteira de investimento para atualizar rendimentos.");
-                        break;
+                        break; // Adicionado break para sair do switch
                     }
                     System.out.print("Digite o percentual de rendimento a aplicar (ex: 0.5 para 0.5%): ");
                     BigDecimal percentualRendimento = scanner.nextBigDecimal();

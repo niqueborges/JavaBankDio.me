@@ -1,3 +1,11 @@
+toolchainManagement {
+    jvm {
+        javaRepositories {
+            repository("foojay")
+        }
+    }
+}
+
 plugins {
     id("java")
     // Adicione o plugin de aplicação

@@ -38,4 +38,8 @@ public class InvestmentWallet extends Wallet {
             addFunds(earnings, "Rendimentos do investimento");
         }
     }
+
+    public Object getInvestment() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

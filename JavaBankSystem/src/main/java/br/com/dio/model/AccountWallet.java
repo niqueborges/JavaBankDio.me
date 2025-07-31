@@ -67,19 +67,4 @@ public class AccountWallet extends Wallet {
         System.out.println("Saldo atual: R$ " + funds);
     }
 
-    // Mantenha o getter gerado pelo Lombok para 'pixKeys'
-    @Override
-    public BigDecimal getFunds() { // Sobrescrito para retornar o BigDecimal real
-        return this.funds;
-    }
-
-    @Override
-    public List<MoneyAudit> getFinancialTransactions() { // Sobrescrito para retornar a lista real
-        return this.financialTransactions;
-    }
 }
-
-
-
-
-
