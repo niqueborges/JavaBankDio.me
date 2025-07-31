@@ -1,11 +1,3 @@
-toolchainManagement {
-    jvm {
-        javaRepositories {
-            repository("foojay")
-        }
-    }
-}
-
 plugins {
     id("java")
     // Adicione o plugin de aplicação
@@ -42,4 +34,9 @@ tasks.test {
 // Especifique a classe principal da sua aplicação
 application {
     mainClass.set("br.com.dio.Main")
+}
+
+// Configura a task 'run' para aceitar entrada do console
+tasks.named<org.gradle.api.tasks.JavaExec>("run") {
+    standardInput = System.`in`
 }
