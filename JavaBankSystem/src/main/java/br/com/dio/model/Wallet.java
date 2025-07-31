@@ -3,53 +3,45 @@ package br.com.dio.model;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @ToString
+@Getter
 public abstract class Wallet {
 
-    @Getter
-    private final BankService service;
+    private final BankService service;               // Tipo de carteira (conta ou investimento)
+    protected BigDecimal funds;                     // Saldo atual da carteira
+    protected final List<MoneyAudit> financialTransactions; // Histórico de transações
 
-    protected final List<Money> money;
-
-    public Wallet(BankService service) {
+    // Construtor: inicia a carteira com saldo zero e histórico vazio
+    public Wallet(final BankService service) {
         this.service = service;
-        this.money = new ArrayList<>();
+        this.funds = BigDecimal.ZERO;
+        this.financialTransactions = new ArrayList<>();
     }
 
-    protected List<Money> generateMoney(final long amount, final String description) {
-        var audit = new MoneyAudit(UUID.randomUUID(), service, description, OffsetDateTime.now());
-        return Stream.generate(() -> new Money(audit))
-                .limit(amount)
-                .toList();
+    // Adiciona valor à carteira e registra a transação
+    public void addFunds(final BigDecimal amount, final String description) {
+        this.funds = this.funds.add(amount);
+        this.financialTransactions.add(createAudit(description));
     }
 
-    public long getFunds() {
-        return money.size();
+    // Remove valor da carteira e registra a transação
+    public void reduceFunds(final BigDecimal amount, final String description) {
+        this.funds = this.funds.subtract(amount);
+        this.financialTransactions.add(createAudit(description));
     }
 
-    public void addMoney(final List<Money> money, final BankService service, final String description) {
-        var audit = new MoneyAudit(UUID.randomUUID(), service, description, OffsetDateTime.now());
-        money.forEach(m -> m.addHistory(audit));
-        this.money.addAll(money);
+    // Cria um registro de auditoria para cada movimentação
+    // Método auxiliar para registrar auditoria de uma transação financeira.
+    // Pode ser sobrescrito por subclasses no futuro, se desejado.
+    protected MoneyAudit createAudit(final String description) {
+        return new MoneyAudit(UUID.randomUUID(), this.service, description, OffsetDateTime.now());
     }
 
-    public List<Money> reduceMoney(final long amount) {
-        List<Money> toRemove = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            toRemove.add(this.money.removeFirst()); // Java 21+ OK. Se <21, use LinkedList.
-        }
-        return toRemove;
-    }
-
-    public List<MoneyAudit> getFinancialTransactions() {
-        return money.stream()
-                .flatMap(m -> m.getHistory().stream())
-                .toList();
-    }
 }
+

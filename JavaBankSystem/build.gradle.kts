@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    // Adicione o plugin de aplicação
+    id("application")
 }
 
 configurations {
@@ -17,9 +19,9 @@ repositories {
 
 dependencies {
 
-    compileOnly("org.projectlombok:lombok:1.18.28")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.28")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -27,4 +29,9 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+// Especifique a classe principal da sua aplicação
+application {
+    mainClass.set("br.com.dio.Main")
 }
