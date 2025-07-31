@@ -67,16 +67,15 @@ public class AccountWallet extends Wallet {
         System.out.println("Saldo atual: R$ " + funds);
     }
 
-    public List<String> getPixKeys() {
-        return pixKeys;
+    // Mantenha o getter gerado pelo Lombok para 'pixKeys'
+    @Override
+    public BigDecimal getFunds() { // Sobrescrito para retornar o BigDecimal real
+        return this.funds;
     }
 
-    public String getFunds() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Object getFinancialTransactions() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    public List<MoneyAudit> getFinancialTransactions() { // Sobrescrito para retornar a lista real
+        return this.financialTransactions;
     }
 }
 
